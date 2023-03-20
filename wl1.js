@@ -21,6 +21,14 @@ function startGame() {
     }
   ];
 
+function gameOver() {
+  // Stop the game loop
+  cancelAnimationFrame(gameLoop);
+
+  // Show the game over screen
+  document.getElementById("game-over").style.display = "block";
+  document.getElementById("final-score").textContent = score;
+}
 // Get the canvas and context
 const canvas = document.getElementById("minigame");
 const context = canvas.getContext("2d");
@@ -146,3 +154,5 @@ document.addEventListener("keyup", function(event) {
 // Handle game over
 
 alert("Game over! Your score was " + score)
+
+  
