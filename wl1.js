@@ -1,19 +1,7 @@
 <!DOCTYPE JSON>
 function startGame() {
-  // Set up the canvas and context
-  const canvas = document.getElementById("minigame");
-  const context = canvas.getContext("2d");
 
-  // Set up the player object
-  const player = {
-    x: 50,
-    y: canvas.height / 2,
-    width: 50,
-    height: 50,
-    velocity: 0,
-    gravity: 1,
-    jumping: false
-  };
+  
 
   // Set up the obstacle objects
   const obstacles = [
