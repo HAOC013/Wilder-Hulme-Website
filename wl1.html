@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <div style="text-align: center;">
+  <h1>Welcome to Wilder Hulme</h1>
+  <p>A website for reporting and viewing wildlife sightings and to stay updated on the Wilder Hulme project.</p>
+</div>
+  <style>
+    /* Style your website here */
+    <head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+	<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+	<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+	<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+	<script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+	<script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+		/* Map image */
+		.map {
+			position: relative;
+			width: 100%;
+			max-width: 1000px;
+		}
+		/* Sightings panel */
+		.panel {
+			position: absolute;
+			top: 0;
+			right: 0;
+			background-color: #fff;
+			padding: 10px;
+			overflow-y: auto;
+			max-height: 80vh;
+			width: 25%;
+			box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+		}
+		.panel h3 {
+			margin-top: 0;
+			font-size: 1.2rem;
+			font-weight: bold;
+		}
+		.panel ul {
+			padding: 0;
+			list-style: none;
+			margin-top: 5px;
+			font-size: 0.9rem;
+			line-height: 1.5;
+		}
+		.panel li {
+			margin-bottom: 10px;
+		}
+		.panel li:last-child {
+			margin-bottom: 0;
+		}
+		.panel img {
+			max-width: 100%;
+			height: auto;
+			display: block;
+			margin-bottom: 5px;
+		}
+		.panel form {
+			margin-top: 20px;
+		}
+		.panel label {
+			display: block;
+			font-weight: bold;
+			margin-bottom: 5px;
+		}
+		.panel input[type="text"],
+		.panel input[type="file"],
+		.panel textarea {
+			width: 100%;
+			padding: 5px;
+			border: 1px solid #ccc;
+			margin-bottom: 10px;
+			border-radius: 3px;
+			font-size: 0.9rem;
+			line-height: 1.5;
+		}
+		.panel button[type="submit"] {
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 3px;
+			font-size: 1rem;
+			cursor: pointer;
+		}
+		.panel button[type="submit"]:hover {
+			background-color: #0069d9;
+		}
+		/* About section */
+		.about {
+			margin-top: 30px;
+			border-top: 1px solid #ccc;
+			padding-top: 30px;
+		}
+		.about h2 {
+			margin-top: 0;
+			font-size: 2rem;
+			font-weight: bold;
+			margin-bottom: 20px;
+		}
+		.about p {
+			font-size: 1.1rem;
+			line-height: 1.5;
+		}
+		/* Mini game section */
+		.minigame {
+			margin-top: 30px;
+			border-top: 1px solid #ccc;
+			padding-top: 30px;
+		}
+		.minigame h2 {
+			margin-top: 0;
+			font-size: 2rem;
+			font-weight: bold;
+			margin-bottom: 20px;
+		}
+		#gameContainer {
+			width: 100%;
+			height: 500px;
+			background-color: #f9	
+        </style>
+
+  <header>
+    <h1>Wilder Hulme</h1>
+    <nav>
+      <ul>
+        <li><a href="#map">Map</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#minigame">Minigame</a></li>
+        <li><a href="#news">News</a></li>
+        <li><a href="#get-involved">Get Involved</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+      <h2>Wildlife Sightings Map</h2>
+      <div id="mapContainer"></div>
+      
+      <!-- Insert map code here -->
+     <div id="map" style="width: 100%; height: 600px;"></div>
+
+<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"
+    type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"
+    type="text/javascript" charset="utf-8"></script>
+
+<script>
+    // Initialize the platform object
+    var platform = new H.service.Platform({
+        'apikey': 'VoiyWAdj-3Q0U7jIs01Pp7wj8O4z9-gbbIF7TCRQdDQ'
+    });
+
+    // Obtain the default map types from the platform object
+    var maptypes = platform.createDefaultLayers();
+
+    // Instantiate (and display) a map object:
+    var map = new H.Map(
+        document.getElementById('map'),
+        maptypes.vector.normal.map,
+        {
+            zoom: 17.5,
+            center: { lng: -2.2235, lat: 53.4568 }
+        });
+
+    // Enable the event system on the map instance:
+    var mapEvents = new H.mapevents.MapEvents(map);
+
+    // Add event listener to the map to capture user interaction:
+    map.addEventListener('tap', function(evt) {
+        var coord = map.screenToGeo(evt.currentPointer.viewportX,
+            evt.currentPointer.viewportY);
+        console.log(coord);
+    });
+
+    // Instantiate the default behavior, providing the platform object:
+    var behavior = new H.mapevents.Behavior(mapEvents);
+
+    // Create the default UI:
+    var ui = H.ui.UI.createDefault(map, maptypes);
+
+    // Add markers to the map
+    var marker = new H.map.Marker({ lng: -2.236717, lat: 53.462882 });
+    map.addObject(marker);
+</script>
+      <form action="upload_sighting.py" method="post" enctype="multipart/form-data">
+    <label for="species">Species:</label>
+    <input type="text" name="species" id="species"><br><br>
+    <label for="number">Number sighted:</label>
+    <input type="number" name="number" id="number"><br><br>
+    <label for="description">Description:</label><br>
+    <textarea name="description" id="description" rows="4" cols="50"></textarea><br><br>
+    <label for="image">Image:</label>
+    <input type="file" name="image" id="image"><br><br>
+    <input type="submit" value="Submit">
+</form>
+    </section>
+
+    <section id="about">
+      <h2>About Wilder Hulme</h2>
+      <p>The Hulme Hall grounds have the potential to become a sanctuary for local wildlife. On behalf of the Hulme Hall Halls Exec committee, I have outlined possible actions we could take to improved biodiversity. I am appealing for support from the University as the project would benefit their living campus plan (as part of the University’s Environmental Stainability Strategy). I also seek to work with local charities to help integrate our efforts with larger projects. I am proposing an initiative whereby making Hulme a home for Starlings (and other birds), Frogs, Bats, Wildflowers/Bees/insects, and hedgehogs would benefit residents. Improving their access to nature and providing them with volunteering opportunities. Our actions would fit into the universities Living Campus plan. I propose a stepwise approach to get easily implementable environmental projects approved by university estates. By getting residents engaged, the whole project will become one big event strengthening the community while creating something worthwhile. 
+</p>
+    </section>
+
+    <section id="minigame">
+      <h2>Wilder Hulme Minigame</h2>
+       <title>Wilder Hulme Minigame</title>
+         <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Game</title>
+</head>
+<body>
+  <h1>My Game</h1>
+  <div id="game-container"></div>
+
+  <!-- Load the game script -->
+  <script src="minigame.json"></script>
+
+  <!-- Run the game -->
+  <script>
+    // Replace this with the code to start your game
+    startGame();
+  </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <section id="minigame">
+
+  <canvas id="game-canvas"></canvas>
+  <div id="game-over">
+    <h3>Game over!</h3>
+    <p>Your final score was <span id="final-score">0</span>.</p>
+    <form id="high-score-form">
+      <label for="initials">Enter your initials:</label>
+      <input type="text" id="initials" name="initials" maxlength="4" minlength="1">
+      <button type="submit">Submit</button>
+    </form>
+    <p id="high-score-message"></p>
+  </div>
+</section>
+
+<script src="minigame.json"></script>
+    <style>
+      /* CSS for game canvas */
+      canvas {
+        background-color: #fff;
+        display: block;
+        margin: 0 auto;
+      }
+    </style>
+
+    </section>
+
+    <section id="news">
+      <h2>Latest Wildlife Tweets</h2>
+      <!-- Insert latest tweets code here -->
+    </section>
+
+    <section id="get-involved">
+      <h2>Get Involved</h2>
+      <form id="contact-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+        <label for="message">Message:</label>
+        <textarea id="message" required></textarea>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; Wilder Hulme 2023</p>
+  </footer>
+
+
+
+
+<script src="minigame.json"></script>
+  	<script>
+		var platform = new H.service.Platform({
+			'apikey': 'VoiyWAdj-3Q0U7jIs01Pp7wj8O4z9-gbbIF7TCRQdDQ'
+		});
+		var defaultLayers = platform.createDefaultLayers();
+		var map = new H.Map(
+			document.getElementById('mapContainer'),
+			defaultLayers.vector.normal.map,
+			{
+				zoom: 16,
+				center: {lat: 53.4647, lng: -2.2317}
+			}
+		);
+		var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+		var ui = H.ui.UI.createDefault(map, defaultLayers);
+	</script>
+
+    <meta charset="UTF-8">
+    <title>Wilder Hulme</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0fff0; /* light green */
+        color: #333; /* dark grey */
+      }
+      
+      h1, h2, h3 {
+        color: #228b22; /* forest green */
+      }
+      
+      /* Style for map */
+      #map {
+        height: 500px;
+        width: 100%;
+        margin: 0 auto;
+      }
+      
+      /* Style for form */
+      form {
+        margin: 20px;
+        padding: 10px;
+        background-color: #f5f5f5; /* light grey */
+        border-radius: 5px;
+      }
+      
+      /* Style for buttons */
+      button {
+        background-color: #228b22; /* forest green */
+        color: #fff; /* white */
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+      }
+      
+      button:hover {
+        background-color: #3cb371; /* medium sea green */
+      }
+    </style>
+ 
+
+  </body>
